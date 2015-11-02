@@ -11,8 +11,8 @@
 	</appender>
 	
 	<!-- Application Loggers -->
-	<logger name="org.mitre.web">
-		<level value="info" />
+	<logger name="org.mitre">
+		<level value="debug" />
 	</logger>
 	
 	<!-- 3rdparty Loggers -->

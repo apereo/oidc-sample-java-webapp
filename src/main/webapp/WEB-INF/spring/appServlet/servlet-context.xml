@@ -75,7 +75,7 @@
 		-->
 		<bean class="org.mitre.openid.connect.client.SubjectIssuerGrantedAuthority">
 			<constructor-arg name="subject" value="90342.ASDFJWFA" />
-			<constructor-arg name="issuer" value="http://localhost:8080/openid-connect-server-webapp/" />
+			<constructor-arg name="issuer" value="https://mmoayyed.unicon.net/idp/" />
 		</bean>
 	</util:set>
 
@@ -88,9 +88,9 @@
 	<bean id="openIdConnectAuthenticationFilter" class="org.mitre.openid.connect.client.OIDCAuthenticationFilter">
 		<property name="authenticationManager" ref="authenticationManager" />
 
-		<property name="issuerService" ref="hybridIssuerService" />
-		<property name="serverConfigurationService" ref="dynamicServerConfigurationService" />
-		<property name="clientConfigurationService" ref="dynamicClientConfigurationService" />
+		<property name="issuerService" ref="staticIssuerService" />
+		<property name="serverConfigurationService" ref="staticServerConfigurationService" />
+		<property name="clientConfigurationService" ref="staticClientConfigurationService" />
 		<property name="authRequestOptionsService" ref="staticAuthRequestOptionsService" />
 		<property name="authRequestUrlBuilder" ref="plainAuthRequestUrlBuilder" />
 		
@@ -109,7 +109,7 @@
 		Static issuer service, returns the same issuer for every request.
 	-->
 	<bean class="org.mitre.openid.connect.client.service.impl.StaticSingleIssuerService" id="staticIssuerService">
-		<property name="issuer" value="http://localhost:8080/openid-connect-server-webapp/" />
+		<property name="issuer" value="https://mmoayyed.unicon.net/idp/" />
 	</bean>	
 
 	<!-- 
@@ -152,16 +152,16 @@
 	<!-- 
 		Static server configuration, contains a map of server configuration objects keyed by the issuer URL.
 	-->
-	<bean class="org.mitre.openid.connect.client.service.impl.StaticServerConfigurationService">
+	<bean class="org.mitre.openid.connect.client.service.impl.StaticServerConfigurationService" id="staticServerConfigurationService">
 		<property name="servers">
 			<map>
-				<entry key="http://localhost:8080/openid-connect-server-webapp/">
+				<entry key="https://mmoayyed.unicon.net/idp/">
 					<bean class="org.mitre.openid.connect.config.ServerConfiguration">
-						<property name="issuer" value="http://localhost:8080/openid-connect-server-webapp/" />
-						<property name="authorizationEndpointUri"	value="http://localhost:8080/openid-connect-server-webapp/authorize" />
-						<property name="tokenEndpointUri"	value="http://localhost:8080/openid-connect-server-webapp/token" />
-						<property name="userInfoUri" value="http://localhost:8080/openid-connect-server-webapp/userinfo" />
-						<property name="jwksUri" value="http://localhost:8080/openid-connect-server-webapp/jwk" />
+						<property name="issuer" value="https://mmoayyed.unicon.net/idp/" />
+						<property name="authorizationEndpointUri"	value="https://mmoayyed.unicon.net/idp/authorize" />
+						<property name="tokenEndpointUri"	value="https://mmoayyed.unicon.net/idp/token" />
+						<property name="userInfoUri" value="https://mmoayyed.unicon.net/idp/userinfo" />
+						<property name="jwksUri" value="https://mmoayyed.unicon.net/idp/jwk" />
 					</bean>
 				</entry>
 			</map>
@@ -180,13 +180,13 @@
 	<bean class="org.mitre.openid.connect.client.service.impl.HybridServerConfigurationService">
 		<property name="servers">
 			<map>
-				<entry key="http://localhost:8080/openid-connect-server-webapp/">
+				<entry key="https://mmoayyed.unicon.net/idp/">
 					<bean class="org.mitre.openid.connect.config.ServerConfiguration">
-						<property name="issuer" value="http://localhost:8080/openid-connect-server-webapp/" />
-						<property name="authorizationEndpointUri"	value="http://localhost:8080/openid-connect-server-webapp/authorize" />
-						<property name="tokenEndpointUri"	value="http://localhost:8080/openid-connect-server-webapp/token" />
-						<property name="userInfoUri" value="http://localhost:8080/openid-connect-server-webapp/userinfo" />
-						<property name="jwksUri" value="http://localhost:8080/openid-connect-server-webapp/jwk" />
+						<property name="issuer" value="https://mmoayyed.unicon.net/idp/" />
+						<property name="authorizationEndpointUri"	value="https://mmoayyed.unicon.net/idp/authorize" />
+						<property name="tokenEndpointUri"	value="https://mmoayyed.unicon.net/idp/token" />
+						<property name="userInfoUri" value="https://mmoayyed.unicon.net/idp/userinfo" />
+						<property name="jwksUri" value="https://mmoayyed.unicon.net/idp/jwk" />
 					</bean>
 				</entry>
 			</map>
@@ -225,12 +225,12 @@
 				<property name="tokenEndpointAuthMethod" value="SECRET_BASIC" />
 				<property name="redirectUris">
 					<set>
-						<value>http://localhost:8080/simple-web-app/openid_connect_login</value>
+						<value>http://localhost:8081/simple-web-app/openid_connect_login</value>
 					</set>
 				</property>
 				<!-- for signed requests -->
 				<property name="requestObjectSigningAlg" value="RS256" />
-				<property name="jwksUri" value="http://localhost:8080/simple-web-app/jwk" />
+				<property name="jwksUri" value="http://localhost:8081/simple-web-app/jwk" />
 			</bean>
 		</property>
 		<!-- 
@@ -255,7 +255,7 @@
 	<bean class="org.mitre.openid.connect.client.service.impl.StaticClientConfigurationService" id="staticClientConfigurationService">
 		<property name="clients">
 			<map>
-				<entry key="http://localhost:8080/openid-connect-server-webapp/">
+				<entry key="https://mmoayyed.unicon.net/idp/">
 					<bean class="org.mitre.oauth2.model.RegisteredClient">
 						<property name="clientId" value="client" />
 						<property name="clientSecret" value="secret" />
@@ -271,7 +271,7 @@
 						<property name="tokenEndpointAuthMethod" value="SECRET_BASIC" />
 						<property name="redirectUris">
 							<set>
-								<value>http://localhost:8080/simple-web-app/openid_connect_login</value>
+								<value>http://localhost:8081/simple-web-app/openid_connect_login</value>
 							</set>
 						</property>
 					</bean>
@@ -287,7 +287,7 @@
 	<bean class="org.mitre.openid.connect.client.service.impl.HybridClientConfigurationService" id="hybridClientConfigurationService">
 		<property name="clients">
 			<map>
-				<entry key="http://localhost:8080/openid-connect-server-webapp/">
+				<entry key="https://mmoayyed.unicon.net/idp/">
 					<bean class="org.mitre.oauth2.model.RegisteredClient">
 						<property name="clientId" value="client" />
 						<property name="clientSecret" value="secret" />
@@ -303,7 +303,7 @@
 						<property name="tokenEndpointAuthMethod" value="SECRET_BASIC" />
 						<property name="redirectUris">
 							<set>
-								<value>http://localhost:8080/simple-web-app/openid_connect_login</value>
+								<value>http://localhost:8081/simple-web-app/openid_connect_login</value>
 							</set>
 						</property>
 						
@@ -326,7 +326,7 @@
 				<property name="tokenEndpointAuthMethod" value="SECRET_BASIC" />
 				<property name="redirectUris">
 					<set>
-						<value>http://localhost:8080/simple-web-app/openid_connect_login</value>
+						<value>http://localhost:8081/simple-web-app/openid_connect_login</value>
 					</set>
 				</property>
 			</bean>
