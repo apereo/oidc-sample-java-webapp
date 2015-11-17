@@ -28,12 +28,29 @@
         up static resources in the ${webappRoot}/resources directory -->
     <mvc:resources mapping="/resources/**" location="/resources/" />
 
+    <!--Add placeholder properties-->
+    <bean
+            class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location">
+            <value>WEB-INF/servlet.properties</value>
+        </property>
+    </bean>
+
+    <bean id="properties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+        <property name="locations">
+            <list><value>WEB-INF/servlet.properties</value></list>
+        </property>
+    </bean>
+
     <!-- Resolves views selected for rendering by @Controllers to .jsp resources
         in the /WEB-INF/views directory -->
     <bean
         class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/views/" />
         <property name="suffix" value=".jsp" />
+        <property name="exposedContextBeanNames">
+            <list><value>properties</value></list>
+        </property>
     </bean>
 
     <context:component-scan base-package="org.mitre.web" />
@@ -75,7 +92,7 @@
         -->
         <bean class="org.mitre.openid.connect.client.SubjectIssuerGrantedAuthority">
             <constructor-arg name="subject" value="90342.ASDFJWFA" />
-            <constructor-arg name="issuer" value="https://mmoayyed.unicon.net:8443/idp/" />
+            <constructor-arg name="issuer" value="${server.url}/idp/" />
         </bean>
     </util:set>
 
@@ -109,7 +126,7 @@
         Static issuer service, returns the same issuer for every request.
     -->
     <bean class="org.mitre.openid.connect.client.service.impl.StaticSingleIssuerService" id="staticIssuerService">
-        <property name="issuer" value="https://mmoayyed.unicon.net:8443/idp/" />
+        <property name="issuer" value="${server.url}/idp/" />
     </bean>
 
     <!--
@@ -155,13 +172,13 @@
     <bean class="org.mitre.openid.connect.client.service.impl.StaticServerConfigurationService" id="staticServerConfigurationService">
         <property name="servers">
             <map>
-                <entry key="https://mmoayyed.unicon.net:8443/idp/">
+                <entry key="${server.url}/idp/">
                     <bean class="org.mitre.openid.connect.config.ServerConfiguration">
-                        <property name="issuer" value="https://mmoayyed.unicon.net:8443/idp/" />
-                        <property name="authorizationEndpointUri"	value="https://mmoayyed.unicon.net:8443/idp/profile/oidc/authorize" />
-                        <property name="tokenEndpointUri"	value="https://mmoayyed.unicon.net:8443/idp/profile/oidc/token" />
-                        <property name="userInfoUri" value="https://mmoayyed.unicon.net:8443/idp/profile/oidc/userinfo" />
-                        <property name="jwksUri" value="https://mmoayyed.unicon.net:8443/idp/profile/oidc/jwk" />
+                        <property name="issuer" value="${server.url}/idp/" />
+                        <property name="authorizationEndpointUri"	value="${server.url}/idp/profile/oidc/authorize" />
+                        <property name="tokenEndpointUri"	value="${server.url}/idp/profile/oidc/token" />
+                        <property name="userInfoUri" value="${server.url}/idp/profile/oidc/userinfo" />
+                        <property name="jwksUri" value="${server.url}/idp/profile/oidc/jwk" />
                     </bean>
                 </entry>
             </map>
@@ -180,13 +197,13 @@
     <bean class="org.mitre.openid.connect.client.service.impl.HybridServerConfigurationService">
         <property name="servers">
             <map>
-                <entry key="https://mmoayyed.unicon.net:8443/idp/">
+                <entry key="${server.url}/idp/">
                     <bean class="org.mitre.openid.connect.config.ServerConfiguration">
-                        <property name="issuer" value="https://mmoayyed.unicon.net:8443/idp/" />
-                        <property name="authorizationEndpointUri"	value="https://mmoayyed.unicon.net:8443/idp/profile/oidc/authorize" />
-                        <property name="tokenEndpointUri"	value="https://mmoayyed.unicon.net:8443/idp/profile/oidc/token" />
-                        <property name="userInfoUri" value="https://mmoayyed.unicon.net:8443/idp/profile/oidc/userinfo" />
-                        <property name="jwksUri" value="https://mmoayyed.unicon.net:8443/idp/profile/oidc/jwk" />
+                        <property name="issuer" value="${server.url}/idp/" />
+                        <property name="authorizationEndpointUri"	value="${server.url}/idp/profile/oidc/authorize" />
+                        <property name="tokenEndpointUri"	value="${server.url}/idp/profile/oidc/token" />
+                        <property name="userInfoUri" value="${server.url}/idp/profile/oidc/userinfo" />
+                        <property name="jwksUri" value="${server.url}/idp/profile/oidc/jwk" />
                     </bean>
                 </entry>
             </map>
@@ -255,7 +272,7 @@
     <bean class="org.mitre.openid.connect.client.service.impl.StaticClientConfigurationService" id="staticClientConfigurationService">
         <property name="clients">
             <map>
-                <entry key="https://mmoayyed.unicon.net:8443/idp/">
+                <entry key="${server.url}/idp/">
                     <bean class="org.mitre.oauth2.model.RegisteredClient">
                         <property name="clientId" value="client" />
                         <property name="clientSecret" value="secret" />
@@ -287,7 +304,7 @@
     <bean class="org.mitre.openid.connect.client.service.impl.HybridClientConfigurationService" id="hybridClientConfigurationService">
         <property name="clients">
             <map>
-                <entry key="https://mmoayyed.unicon.net:8443/idp/">
+                <entry key="${server.url}/idp/">
                     <bean class="org.mitre.oauth2.model.RegisteredClient">
                         <property name="clientId" value="client" />
                         <property name="clientSecret" value="secret" />
