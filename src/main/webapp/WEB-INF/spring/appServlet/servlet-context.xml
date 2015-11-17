@@ -31,15 +31,11 @@
     <!--Add placeholder properties-->
     <bean
             class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <property name="location">
-            <value>WEB-INF/servlet.properties</value>
-        </property>
+        <property name="properties" ref="properties" />
     </bean>
 
     <bean id="properties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
-        <property name="locations">
-            <list><value>WEB-INF/servlet.properties</value></list>
-        </property>
+        <property name="location" value="WEB-INF/servlet.properties" />
     </bean>
 
     <!-- Resolves views selected for rendering by @Controllers to .jsp resources
