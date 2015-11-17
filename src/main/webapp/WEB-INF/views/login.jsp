@@ -25,8 +25,8 @@
                     </div>
                 </div>
 
+                </br>
                 <div class="row-fluid">
-
                     <div class="span8">
                         <form action="openid_connect_login" method="get">
                             <input type="text" class="input-xxlarge" name="identifier" id="identifier" />
@@ -42,8 +42,7 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-        $('#identifier').val('https://mmoayyed.unicon.net:8443/idp/');
-
+        $('#identifier').val('${properties["server.url"]}/idp/');
     });
 </script>
 <o:footer />
