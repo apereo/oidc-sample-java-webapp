@@ -78,10 +78,17 @@
 		_.each(idClaims, function(val, key, list) {
 			$('#idTokenTable tbody').append('<tr><td>' + _.escape(key) + '</td><td>' + _.escape(val) + '</td></tr>');
 		});
-		
+
 		var userInfo = ${ userInfoJson };
 		_.each(userInfo, function(val, key, list) {
-			$('#userInfoTable tbody').append('<tr><td>' + _.escape(key) + '</td><td>' + _.escape(val) + '</td></tr>');
+		    if(key === "address" && 'formatted' in val) {
+		        address = JSON.parse(val.formatted);
+                if('formatted' in address) {
+			        $('#userInfoTable tbody').append('<tr><td>' + _.escape(key) + '</td><td>' + address.formatted + '</td></tr>');
+                }
+		    } else {
+			    $('#userInfoTable tbody').append('<tr><td>' + _.escape(key) + '</td><td>' + _.escape(val) + '</td></tr>');
+		    }
 		});
 	});
 
