@@ -187,9 +187,9 @@
 			<plugin>
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-maven-plugin</artifactId>
-                <version>9.3.3.v20150827</version>
+                <version>9.3.6.v20151106</version>
                 <configuration>
-                	<jettyXml>etc/jetty/jetty.xml</jettyXml>
+                	<jettyXml>${project.basedir}/etc/jetty/jetty.xml,${project.basedir}/etc/jetty/jetty-ssl.xml,${project.basedir}/etc/jetty/jetty-https.xml</jettyXml>
                     <webApp>
 					     <contextPath>/simple-web-app</contextPath>
 					</webApp>	
