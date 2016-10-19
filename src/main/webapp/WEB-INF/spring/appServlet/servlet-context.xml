@@ -88,7 +88,7 @@
         -->
         <bean class="org.mitre.openid.connect.client.SubjectIssuerGrantedAuthority">
             <constructor-arg name="subject" value="90342.ASDFJWFA" />
-            <constructor-arg name="issuer" value="${server.url}/idp/" />
+            <constructor-arg name="issuer" value="${server.url}" />
         </bean>
     </util:set>
 
@@ -122,7 +122,7 @@
         Static issuer service, returns the same issuer for every request.
     -->
     <bean class="org.mitre.openid.connect.client.service.impl.StaticSingleIssuerService" id="staticIssuerService">
-        <property name="issuer" value="${server.url}/idp/" />
+        <property name="issuer" value="${server.url}" />
     </bean>
 
     <!--
@@ -168,13 +168,13 @@
     <bean class="org.mitre.openid.connect.client.service.impl.StaticServerConfigurationService" id="staticServerConfigurationService">
         <property name="servers">
             <map>
-                <entry key="${server.url}/idp/">
+                <entry key="${server.url}">
                     <bean class="org.mitre.openid.connect.config.ServerConfiguration">
-                        <property name="issuer" value="${server.url}/idp/" />
-                        <property name="authorizationEndpointUri"	value="${server.url}/idp/profile/oidc/authorize" />
-                        <property name="tokenEndpointUri"	value="${server.url}/idp/profile/oidc/token" />
-                        <property name="userInfoUri" value="${server.url}/idp/profile/oidc/userinfo" />
-                        <property name="jwksUri" value="${server.url}/idp/profile/oidc/jwk" />
+                        <property name="issuer" value="${server.url}" />
+                        <property name="authorizationEndpointUri"	value="${server.authz.url}" />
+                        <property name="tokenEndpointUri"	value="${server.token.url}" />
+                        <property name="userInfoUri" value="${server.userinfo.url}" />
+                        <property name="jwksUri" value="${server.jwks.url}" />
                     </bean>
                 </entry>
             </map>
@@ -193,13 +193,13 @@
     <bean class="org.mitre.openid.connect.client.service.impl.HybridServerConfigurationService">
         <property name="servers">
             <map>
-                <entry key="${server.url}/idp/">
+                <entry key="${server.url}">
                     <bean class="org.mitre.openid.connect.config.ServerConfiguration">
-                        <property name="issuer" value="${server.url}/idp/" />
-                        <property name="authorizationEndpointUri"	value="${server.url}/idp/profile/oidc/authorize" />
-                        <property name="tokenEndpointUri"	value="${server.url}/idp/profile/oidc/token" />
-                        <property name="userInfoUri" value="${server.url}/idp/profile/oidc/userinfo" />
-                        <property name="jwksUri" value="${server.url}/idp/profile/oidc/jwk" />
+                      <property name="issuer" value="${server.url}" />
+                      <property name="authorizationEndpointUri"	value="${server.authz.url}" />
+                      <property name="tokenEndpointUri"	value="${server.token.url}" />
+                      <property name="userInfoUri" value="${server.userinfo.url}" />
+                      <property name="jwksUri" value="${server.jwks.url}" />
                     </bean>
                 </entry>
             </map>
@@ -268,7 +268,7 @@
     <bean class="org.mitre.openid.connect.client.service.impl.StaticClientConfigurationService" id="staticClientConfigurationService">
         <property name="clients">
             <map>
-                <entry key="${server.url}/idp/">
+                <entry key="${server.url}">
                     <bean class="org.mitre.oauth2.model.RegisteredClient">
                         <property name="clientId" value="client" />
                         <property name="clientSecret" value="secret" />
@@ -300,7 +300,7 @@
     <bean class="org.mitre.openid.connect.client.service.impl.HybridClientConfigurationService" id="hybridClientConfigurationService">
         <property name="clients">
             <map>
-                <entry key="${server.url}/idp/">
+                <entry key="${server.url}">
                     <bean class="org.mitre.oauth2.model.RegisteredClient">
                         <property name="clientId" value="client" />
                         <property name="clientSecret" value="secret" />
@@ -374,6 +374,7 @@
                 <entry key="max_age" value="30" />
                 <entry key="prompt" value="none" />
                 -->
+                <entry key="acr_values" value="mfa-gauth,mfa-duo" />
             </map>
         </property>
     </bean>

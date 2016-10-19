@@ -42,7 +42,7 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-        $('#identifier').val('${properties["server.url"]}/idp/');
+        $('#identifier').val('${properties["server.url"]}');
     });
 </script>
 <o:footer />
