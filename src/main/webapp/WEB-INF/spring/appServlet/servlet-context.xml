@@ -101,11 +101,11 @@
     <bean id="openIdConnectAuthenticationFilter" class="org.mitre.openid.connect.client.OIDCAuthenticationFilter">
         <property name="authenticationManager" ref="authenticationManager" />
 
-        <property name="issuerService" ref="staticIssuerService" />
-        <property name="serverConfigurationService" ref="staticServerConfigurationService" />
-        <property name="clientConfigurationService" ref="staticClientConfigurationService" />
-        <property name="authRequestOptionsService" ref="staticAuthRequestOptionsService" />
-        <property name="authRequestUrlBuilder" ref="plainAuthRequestUrlBuilder" />
+        <property name="issuerService" ref="${issuerService}" />
+        <property name="serverConfigurationService" ref="${serverConfigurationService}" />
+        <property name="clientConfigurationService" ref="${clientConfigurationService}" />
+        <property name="authRequestOptionsService" ref="${authRequestOptionsService}" />
+        <property name="authRequestUrlBuilder" ref="${authRequestUrlBuilder}" />
 
     </bean>
 
