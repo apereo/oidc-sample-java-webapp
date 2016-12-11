@@ -173,6 +173,7 @@
                         <property name="issuer" value="${server.url}" />
                         <property name="authorizationEndpointUri"	value="${server.authz.url}" />
                         <property name="tokenEndpointUri"	value="${server.token.url}" />
+                        <property name="registrationEndpointUri"	value="${server.registration.url}" />
                         <property name="userInfoUri" value="${server.userinfo.url}" />
                         <property name="jwksUri" value="${server.jwks.url}" />
                     </bean>
@@ -373,8 +374,9 @@
                 <entry key="display" value="page" />
                 <entry key="max_age" value="30" />
                 <entry key="prompt" value="none" />
-                -->
+                
                 <entry key="acr_values" value="mfa-gauth,mfa-duo" />
+                -->
             </map>
         </property>
     </bean>
