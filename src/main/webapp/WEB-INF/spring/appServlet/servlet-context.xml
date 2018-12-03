@@ -374,9 +374,9 @@
                 <entry key="display" value="page" />
                 <entry key="max_age" value="30" />
                 <entry key="prompt" value="none" />
-                
+                 -->
                 <entry key="acr_values" value="mfa-gauth,mfa-duo" />
-                -->
+               
             </map>
         </property>
     </bean>
