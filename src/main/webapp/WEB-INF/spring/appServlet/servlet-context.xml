@@ -29,13 +29,24 @@
     <mvc:resources mapping="/resources/**" location="/resources/" />
 
     <!--Add placeholder properties-->
-    <bean
-            class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <property name="properties" ref="properties" />
+    <bean id="placeholderConfigurer" class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
+        <property name="propertiesArray">
+            <array>
+                <bean class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+                    <property name="location" value="WEB-INF/servlet.properties" />
+                </bean>
+                <bean class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+                    <property name="location" value="file://${webapp.home}/local-values.conf" />
+                    <property name="ignoreResourceNotFound" value="true" />
+                </bean>
+            </array>
+        </property>
     </bean>
 
-    <bean id="properties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
-        <property name="location" value="WEB-INF/servlet.properties" />
+    <bean id="properties" class="org.springframework.core.env.PropertySourcesPropertyResolver">
+        <constructor-arg>
+            <bean factory-bean="placeholderConfigurer" factory-method="getAppliedPropertySources" />
+        </constructor-arg>
     </bean>
 
     <!-- Resolves views selected for rendering by @Controllers to .jsp resources
@@ -44,9 +55,6 @@
         class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/views/" />
         <property name="suffix" value=".jsp" />
-        <property name="exposedContextBeanNames">
-            <list><value>properties</value></list>
-        </property>
     </bean>
 
     <context:component-scan base-package="org.mitre.web" />
@@ -239,12 +247,12 @@
                 <property name="tokenEndpointAuthMethod" value="SECRET_BASIC" />
                 <property name="redirectUris">
                     <set>
-                        <value>https://mmoayyed.unicon.net:9443/simple-web-app/openid_connect_login</value>
+                        <value>${webapp.login.url}</value>
                     </set>
                 </property>
                 <!-- for signed requests -->
                 <property name="requestObjectSigningAlg" value="RS256" />
-                <property name="jwksUri" value="https://mmoayyed.unicon.net:9443/simple-web-app/jwk" />
+                <property name="jwksUri" value="${webapp.url}jwk" />
             </bean>
         </property>
         <!--
@@ -285,7 +293,7 @@
                         <property name="tokenEndpointAuthMethod" value="SECRET_BASIC" />
                         <property name="redirectUris">
                             <set>
-                                <value>https://mmoayyed.unicon.net:9443/simple-web-app/openid_connect_login</value>
+                                <value>${webapp.login.url}</value>
                             </set>
                         </property>
                     </bean>
@@ -317,7 +325,7 @@
                         <property name="tokenEndpointAuthMethod" value="SECRET_BASIC" />
                         <property name="redirectUris">
                             <set>
-                                <value>https://mmoayyed.unicon.net:9443/simple-web-app/openid_connect_login</value>
+                                <value>${webapp.login.url}</value>
                             </set>
                         </property>
 
@@ -340,7 +348,7 @@
                 <property name="tokenEndpointAuthMethod" value="SECRET_BASIC" />
                 <property name="redirectUris">
                     <set>
-                        <value>https://mmoayyed.unicon.net:9443/simple-web-app/openid_connect_login</value>
+                        <value>${webapp.login.url}</value>
                     </set>
                 </property>
             </bean>
@@ -376,7 +384,7 @@
                 <entry key="prompt" value="none" />
                  -->
                 <entry key="acr_values" value="mfa-gauth,mfa-duo" />
-               
+
             </map>
         </property>
     </bean>
