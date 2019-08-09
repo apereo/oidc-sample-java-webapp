@@ -15,6 +15,7 @@
 		<mitreid-connect-version>1.1.19</mitreid-connect-version>
 		<webapp.home>${basedir}</webapp.home>
 		<debug.suspend>n</debug.suspend>
+		<webapp.jvmargs></webapp.jvmargs>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -202,7 +203,7 @@
 						</systemProperty>
 					</systemProperties>
 					<!-- Works with remote debugging and mvn jetty:run-forked -->
-					<jvmArgs>-Xdebug -Xrunjdwp:transport=dt_socket,address=5001,server=y,suspend=${debug.suspend} -Dwebapp.home=${webapp.home}</jvmArgs>
+					<jvmArgs>${webapp.jvmArgs} -Xdebug -Xrunjdwp:transport=dt_socket,address=5001,server=y,suspend=${debug.suspend} -Dwebapp.home=${webapp.home}</jvmArgs>
 				</configuration>
 			</plugin>
 		</plugins>
