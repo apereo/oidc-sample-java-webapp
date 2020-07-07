@@ -1,80 +1,80 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns:mvc="http://www.springframework.org/schema/mvc"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.springframework.org/schema/beans"
-    xmlns:context="http://www.springframework.org/schema/context"
-    xmlns:security="http://www.springframework.org/schema/security"
-    xmlns:oauth2="http://www.springframework.org/schema/security/oauth2"
-    xmlns:tx="http://www.springframework.org/schema/tx" xmlns:util="http://www.springframework.org/schema/util"
-    xsi:schemaLocation="http://www.springframework.org/schema/security/oauth2 http://www.springframework.org/schema/security/spring-security-oauth2.xsd
-        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
-        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd
-        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
-        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
-        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:security="http://www.springframework.org/schema/security"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
     <!-- DispatcherServlet Context: defines this servlet's request-processing
         infrastructure -->
 
     <!-- Enables the Spring MVC @Controller programming model -->
-    <mvc:annotation-driven />
+    <mvc:annotation-driven/>
 
     <mvc:interceptors>
         <!-- Inject the UserInfo into the current context -->
-        <bean id="userInfoInterceptor" class="org.mitre.openid.connect.web.UserInfoInterceptor" />
+        <bean id="userInfoInterceptor" class="org.mitre.openid.connect.web.UserInfoInterceptor"/>
     </mvc:interceptors>
 
     <!-- Handles HTTP GET requests for /resources/** by efficiently serving
         up static resources in the ${webappRoot}/resources directory -->
-    <mvc:resources mapping="/resources/**" location="/resources/" />
+    <mvc:resources mapping="/resources/**" location="/resources/"/>
 
     <!--Add placeholder properties-->
     <bean
             class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <property name="properties" ref="properties" />
+        <property name="properties" ref="properties"/>
     </bean>
 
     <bean id="properties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
-        <property name="location" value="WEB-INF/servlet.properties" />
+        <property name="location" value="WEB-INF/servlet.properties"/>
     </bean>
 
     <!-- Resolves views selected for rendering by @Controllers to .jsp resources
         in the /WEB-INF/views directory -->
     <bean
-        class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-        <property name="prefix" value="/WEB-INF/views/" />
-        <property name="suffix" value=".jsp" />
+            class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/views/"/>
+        <property name="suffix" value=".jsp"/>
         <property name="exposedContextBeanNames">
-            <list><value>properties</value></list>
+            <list>
+                <value>properties</value>
+            </list>
         </property>
     </bean>
 
-    <context:component-scan base-package="org.mitre.web" />
+    <context:component-scan base-package="org.mitre.web"/>
 
     <security:global-method-security pre-post-annotations="enabled" proxy-target-class="true" authentication-manager-ref="authenticationManager"/>
 
     <security:http auto-config="false" use-expressions="true"
-        disable-url-rewriting="true" entry-point-ref="authenticationEntryPoint"
-        pattern="/**">
+                   disable-url-rewriting="true" entry-point-ref="authenticationEntryPoint"
+                   pattern="/**">
 
-        <security:custom-filter before="PRE_AUTH_FILTER" ref="openIdConnectAuthenticationFilter" />
+        <security:custom-filter before="PRE_AUTH_FILTER" ref="openIdConnectAuthenticationFilter"/>
 
-        <security:logout />
+        <security:logout/>
 
     </security:http>
 
     <bean id="authenticationEntryPoint" class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">
-        <property name="loginFormUrl" value="/openid_connect_login" />
+        <constructor-arg name="loginFormUrl" value="/openid_connect_login"/>
     </bean>
 
     <security:authentication-manager alias="authenticationManager">
-        <security:authentication-provider ref="openIdConnectAuthenticationProvider" />
+        <security:authentication-provider ref="openIdConnectAuthenticationProvider"/>
     </security:authentication-manager>
 
     <bean id="openIdConnectAuthenticationProvider" class="org.mitre.openid.connect.client.OIDCAuthenticationProvider">
         <property name="authoritiesMapper">
             <bean class="org.mitre.openid.connect.client.NamedAdminAuthoritiesMapper">
-                <property name="admins" ref="namedAdmins" />
+                <property name="admins" ref="namedAdmins"/>
             </bean>
         </property>
     </bean>
@@ -87,8 +87,8 @@
             These are values from the demo "openid-connect-server-webapp" project of MITREid Connect.
         -->
         <bean class="org.mitre.openid.connect.client.SubjectIssuerGrantedAuthority">
-            <constructor-arg name="subject" value="90342.ASDFJWFA" />
-            <constructor-arg name="issuer" value="${server.url}" />
+            <constructor-arg name="subject" value="90342.ASDFJWFA"/>
+            <constructor-arg name="issuer" value="${server.url}"/>
         </bean>
     </util:set>
 
@@ -99,16 +99,15 @@
       -
       -->
     <bean id="openIdConnectAuthenticationFilter" class="org.mitre.openid.connect.client.OIDCAuthenticationFilter">
-        <property name="authenticationManager" ref="authenticationManager" />
+        <property name="authenticationManager" ref="authenticationManager"/>
 
-        <property name="issuerService" ref="${issuerService}" />
-        <property name="serverConfigurationService" ref="${serverConfigurationService}" />
-        <property name="clientConfigurationService" ref="${clientConfigurationService}" />
-        <property name="authRequestOptionsService" ref="${authRequestOptionsService}" />
-        <property name="authRequestUrlBuilder" ref="${authRequestUrlBuilder}" />
+        <property name="issuerService" ref="${issuerService}"/>
+        <property name="serverConfigurationService" ref="${serverConfigurationService}"/>
+        <property name="clientConfigurationService" ref="${clientConfigurationService}"/>
+        <property name="authRequestOptionsService" ref="${authRequestOptionsService}"/>
+        <property name="authRequestUrlBuilder" ref="${authRequestUrlBuilder}"/>
 
     </bean>
-
 
 
     <!--
@@ -122,7 +121,7 @@
         Static issuer service, returns the same issuer for every request.
     -->
     <bean class="org.mitre.openid.connect.client.service.impl.StaticSingleIssuerService" id="staticIssuerService">
-        <property name="issuer" value="${server.url}" />
+        <property name="issuer" value="${server.url}"/>
     </bean>
 
     <!--
@@ -131,7 +130,7 @@
         as the "identifier" parameter as a query parameter.
     -->
     <bean class="org.mitre.openid.connect.client.service.impl.WebfingerIssuerService" id="webfingerIssuerService">
-        <property name="loginPageUrl" value="login" />
+        <property name="loginPageUrl" value="login"/>
     </bean>
 
     <!--
@@ -141,7 +140,7 @@
         "iss" value as a query parameter.
     -->
     <bean class="org.mitre.openid.connect.client.service.impl.ThirdPartyIssuerService">
-      <property name="accountChooserUrl" value="http://localhost/account-chooser/" />
+        <property name="accountChooserUrl" value="http://localhost/account-chooser/"/>
     </bean>
 
     <!--
@@ -150,10 +149,8 @@
         page URL.
     -->
     <bean class="org.mitre.openid.connect.client.service.impl.HybridIssuerService" id="hybridIssuerService">
-        <property name="loginPageUrl" value="login" />
+        <property name="loginPageUrl" value="login"/>
     </bean>
-
-
 
 
     <!--
@@ -170,12 +167,12 @@
             <map>
                 <entry key="${server.url}">
                     <bean class="org.mitre.openid.connect.config.ServerConfiguration">
-                        <property name="issuer" value="${server.url}" />
-                        <property name="authorizationEndpointUri"    value="${server.authz.url}" />
-                        <property name="tokenEndpointUri"    value="${server.token.url}" />
-                        <property name="registrationEndpointUri"    value="${server.registration.url}" />
-                        <property name="userInfoUri" value="${server.userinfo.url}" />
-                        <property name="jwksUri" value="${server.jwks.url}" />
+                        <property name="issuer" value="${server.url}"/>
+                        <property name="authorizationEndpointUri" value="${server.authz.url}"/>
+                        <property name="tokenEndpointUri" value="${server.token.url}"/>
+                        <property name="registrationEndpointUri" value="${server.registration.url}"/>
+                        <property name="userInfoUri" value="${server.userinfo.url}"/>
+                        <property name="jwksUri" value="${server.jwks.url}"/>
                     </bean>
                 </entry>
             </map>
@@ -185,7 +182,7 @@
     <!--
         Dynamic server configuration, fetches the server's information using OIDC Discovery.
     -->
-    <bean class="org.mitre.openid.connect.client.service.impl.DynamicServerConfigurationService" id="dynamicServerConfigurationService" />
+    <bean class="org.mitre.openid.connect.client.service.impl.DynamicServerConfigurationService" id="dynamicServerConfigurationService"/>
 
     <!--
         Hybrid server configuration. Tries to look up a statically configured server in the map, does
@@ -196,19 +193,16 @@
             <map>
                 <entry key="${server.url}">
                     <bean class="org.mitre.openid.connect.config.ServerConfiguration">
-                      <property name="issuer" value="${server.url}" />
-                      <property name="authorizationEndpointUri"    value="${server.authz.url}" />
-                      <property name="tokenEndpointUri"    value="${server.token.url}" />
-                      <property name="userInfoUri" value="${server.userinfo.url}" />
-                      <property name="jwksUri" value="${server.jwks.url}" />
+                        <property name="issuer" value="${server.url}"/>
+                        <property name="authorizationEndpointUri" value="${server.authz.url}"/>
+                        <property name="tokenEndpointUri" value="${server.token.url}"/>
+                        <property name="userInfoUri" value="${server.userinfo.url}"/>
+                        <property name="jwksUri" value="${server.jwks.url}"/>
                     </bean>
                 </entry>
             </map>
         </property>
     </bean>
-
-
-
 
 
     <!--
@@ -226,7 +220,7 @@
     <bean class="org.mitre.openid.connect.client.service.impl.DynamicRegistrationClientConfigurationService" id="dynamicClientConfigurationService">
         <property name="template">
             <bean class="org.mitre.oauth2.model.RegisteredClient">
-                <property name="clientName" value="Simple Web App" />
+                <property name="clientName" value="Simple Web App"/>
                 <property name="scope">
                     <set value-type="java.lang.String">
                         <value>openid</value>
@@ -236,15 +230,15 @@
                         <value>phone</value>
                     </set>
                 </property>
-                <property name="tokenEndpointAuthMethod" value="SECRET_BASIC" />
+                <property name="tokenEndpointAuthMethod" value="SECRET_BASIC"/>
                 <property name="redirectUris">
                     <set>
                         <value>https://mmoayyed.unicon.net:9443/simple-web-app/openid_connect_login</value>
                     </set>
                 </property>
                 <!-- for signed requests -->
-                <property name="requestObjectSigningAlg" value="RS256" />
-                <property name="jwksUri" value="https://mmoayyed.unicon.net:9443/simple-web-app/jwk" />
+                <property name="requestObjectSigningAlg" value="RS256"/>
+                <property name="jwksUri" value="https://mmoayyed.unicon.net:9443/simple-web-app/jwk"/>
             </bean>
         </property>
         <!--
@@ -271,8 +265,8 @@
             <map>
                 <entry key="${server.url}">
                     <bean class="org.mitre.oauth2.model.RegisteredClient">
-                        <property name="clientId" value="client" />
-                        <property name="clientSecret" value="secret" />
+                        <property name="clientId" value="client"/>
+                        <property name="clientSecret" value="secret"/>
                         <property name="scope">
                             <set value-type="java.lang.String">
                                 <value>openid</value>
@@ -282,7 +276,7 @@
                                 <value>phone</value>
                             </set>
                         </property>
-                        <property name="tokenEndpointAuthMethod" value="SECRET_BASIC" />
+                        <property name="tokenEndpointAuthMethod" value="SECRET_BASIC"/>
                         <property name="redirectUris">
                             <set>
                                 <value>https://mmoayyed.unicon.net:9443/simple-web-app/openid_connect_login</value>
@@ -303,8 +297,8 @@
             <map>
                 <entry key="${server.url}">
                     <bean class="org.mitre.oauth2.model.RegisteredClient">
-                        <property name="clientId" value="client" />
-                        <property name="clientSecret" value="secret" />
+                        <property name="clientId" value="client"/>
+                        <property name="clientSecret" value="secret"/>
                         <property name="scope">
                             <set value-type="java.lang.String">
                                 <value>openid</value>
@@ -314,7 +308,7 @@
                                 <value>phone</value>
                             </set>
                         </property>
-                        <property name="tokenEndpointAuthMethod" value="SECRET_BASIC" />
+                        <property name="tokenEndpointAuthMethod" value="SECRET_BASIC"/>
                         <property name="redirectUris">
                             <set>
                                 <value>https://mmoayyed.unicon.net:9443/simple-web-app/openid_connect_login</value>
@@ -327,7 +321,7 @@
         </property>
         <property name="template">
             <bean class="org.mitre.oauth2.model.RegisteredClient">
-                <property name="clientName" value="Simple Web App" />
+                <property name="clientName" value="Simple Web App"/>
                 <property name="scope">
                     <set value-type="java.lang.String">
                         <value>openid</value>
@@ -337,7 +331,7 @@
                         <value>phone</value>
                     </set>
                 </property>
-                <property name="tokenEndpointAuthMethod" value="SECRET_BASIC" />
+                <property name="tokenEndpointAuthMethod" value="SECRET_BASIC"/>
                 <property name="redirectUris">
                     <set>
                         <value>https://mmoayyed.unicon.net:9443/simple-web-app/openid_connect_login</value>
@@ -369,14 +363,16 @@
     <bean class="org.mitre.openid.connect.client.service.impl.StaticAuthRequestOptionsService" id="staticAuthRequestOptionsService">
         <property name="options">
             <map>
+                <!-- <entry key="prompt" value="login" /> -->
+                <!-- <entry key="prompt" value="login" /> -->
+
                 <!-- Entries in this map are sent as key-value parameters to the auth request -->
-                <!--
-                <entry key="display" value="page" />
-                <entry key="max_age" value="30" />
-                <entry key="prompt" value="none" />
-                 -->
-                <entry key="acr_values" value="mfa-gauth,mfa-duo" />
-               
+                <!-- <entry key="display" value="page" /> -->
+                <!-- <entry key="max_age" value="30" /> -->
+
+                <!-- <entry key="acr_values" value="mfa-gauth,mfa-duo" /> -->
+
+                <entry key="claims" value="{&quot;userinfo&quot;: { &quot;name&quot;: {&quot;essential&quot;: true},&quot;phone_number&quot;: {&quot;essential&quot;: true}}}"/>
             </map>
         </property>
     </bean>
@@ -390,29 +386,27 @@
     <!--
         Plain authorization request builder, puts all options as query parameters on the GET request
     -->
-    <bean class="org.mitre.openid.connect.client.service.impl.PlainAuthRequestUrlBuilder" id="plainAuthRequestUrlBuilder" />
+    <bean class="org.mitre.openid.connect.client.service.impl.PlainAuthRequestUrlBuilder" id="plainAuthRequestUrlBuilder"/>
 
     <!--
         Signed authorization request builder, puts all options as elements in a JWS-signed request object
     -->
     <bean class="org.mitre.openid.connect.client.service.impl.SignedAuthRequestUrlBuilder" id="signedAuthRequestUrlBuilder">
-      <property name="signingAndValidationService" ref="defaultSignerService" />
+        <property name="signingAndValidationService" ref="defaultSignerService"/>
     </bean>
 
     <!--
         Encrypted authorization request builder, puts all the options as elements in a JWE-encrypted request object
     -->
     <bean class="org.mitre.openid.connect.client.service.impl.EncryptedAuthRequestUrlBuilder" id="encryptedAuthRequestUrlBuilder">
-      <property name="encrypterService" ref="validatorCache" />
+        <property name="encrypterService" ref="validatorCache"/>
         <property name="alg">
-          <util:constant static-field="com.nimbusds.jose.JWEAlgorithm.RSA1_5"/>
+            <util:constant static-field="com.nimbusds.jose.JWEAlgorithm.RSA1_5"/>
         </property>
         <property name="enc">
-          <util:constant static-field="com.nimbusds.jose.EncryptionMethod.A128GCM"/>
+            <util:constant static-field="com.nimbusds.jose.EncryptionMethod.A128GCM"/>
         </property>
     </bean>
-
-
 
 
     <!--
@@ -425,28 +419,28 @@
         This service fetches and caches JWK sets from URLs.
     -->
 
-    <bean id="validatorCache" class="org.mitre.jwt.signer.service.impl.JWKSetCacheService" />
+    <bean id="validatorCache" class="org.mitre.jwt.signer.service.impl.JWKSetCacheService"/>
 
     <!--
         This service sets up a bunch of signers and validators based on our own keys.
         Replace this keystore's contents for a production deployment.
      -->
-    <bean id="defaultSignerService" class="org.mitre.jwt.signer.service.impl.DefaultJwtSigningAndValidationService">
+    <bean id="defaultSignerService" class="org.mitre.jwt.signer.service.impl.DefaultJWTSigningAndValidationService">
         <constructor-arg name="keyStore">
             <bean id="defaultKeyStore" class="org.mitre.jose.keystore.JWKSetKeyStore">
-                <property name="location" value="classpath:keystore.jwks" />
+                <property name="location" value="classpath:keystore.jwks"/>
             </bean>
         </constructor-arg>
-        <property name="defaultSignerKeyId" value="rsa1" />
-        <property name="defaultSigningAlgorithmName" value="RS256" />
+        <property name="defaultSignerKeyId" value="rsa1"/>
+        <property name="defaultSigningAlgorithmName" value="RS256"/>
     </bean>
 
     <!--
         This service publishes the client's public key on a the endpoint "jwk" off the root of this client.
     -->
     <bean id="clientKeyPublisher" class="org.mitre.openid.connect.client.keypublisher.ClientKeyPublisher">
-        <property name="jwkPublishUrl" value="jwk" />
-        <property name="signingAndValidationService" ref="defaultSignerService" />
+        <property name="jwkPublishUrl" value="jwk"/>
+        <property name="signingAndValidationService" ref="defaultSignerService"/>
     </bean>
 
 </beans>

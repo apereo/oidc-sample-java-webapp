@@ -35,7 +35,7 @@
 
 				<p>Your ID Token has the following set of claims:</p>
 				
-				<security:authentication property="idTokenValue" var="idToken" />
+				<security:authentication property="idToken" var="idToken" />
 				<table class="table table-striped table-hover" id="idTokenTable">
 					<thead>
 						<tr>
@@ -71,15 +71,18 @@
 <script type="text/javascript">
 	$(document).ready(function () {
 
-		var idTokenString = "${ idToken }";
+		var idTokenString = "${ idToken.serialize() }";
 		var idToken = jwt.WebTokenParser.parse(idTokenString);
 		var idClaims = JSON.parse(jwt.base64urldecode(idToken.payloadSegment));
-	
+
 		_.each(idClaims, function(val, key, list) {
 			$('#idTokenTable tbody').append('<tr><td>' + _.escape(key) + '</td><td>' + _.escape(val) + '</td></tr>');
 		});
 
 		var userInfo = ${ userInfoJson };
+		if (userInfo.hasOwnProperty('attributes')) {
+			userInfo = userInfo.attributes;
+		}
 		_.each(userInfo, function(val, key, list) {
 		    if(key === "address" && 'formatted' in val) {
 		        address = JSON.parse(val.formatted);
